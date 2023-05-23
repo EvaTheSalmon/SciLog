@@ -1,6 +1,16 @@
+import os
 from flask import Flask, render_template, request, jsonify
+from pymongo import MongoClient
+from dotenv import load_dotenv
+
+load_dotenv('.env')
+mongo_adress = os.environ.get('MONGO_ADRESS')
+db_name = os.environ.get('DB_NAME')
 
 app = Flask(__name__)
+
+client = MongoClient('mongodb://' + mongo_adress)
+db = client[str(db_name)]
 
 @app.route('/')
 def index():
