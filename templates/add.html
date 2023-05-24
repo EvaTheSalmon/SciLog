@@ -47,16 +47,15 @@
 <body>
   <div class="container">
     <h1>Add process</h1>
-    <form id="process-form">
+    <form id="process-form" action="/save-form-data" method="POST">
       <div class="row mb-1 draggable">
         <div class="col-2">
-          <input type="text" class="form-control key-name" value="Project name"></input>
+          <input type="text" class="form-control key-name" value="Project name" oninput="updateInputName(this)"></input>
         </div>
         <div class="col-3">
-          <input type="text" class="form-control" placeholder="Enter project name">
+          <input type="text" class="form-control" id="input1" placeholder="Enter project name">
         </div>
         <div class="col-1">
-          
           <button type="button" class="btn btn-custom" id="remove"><i class="fas fa-trash"></i></button>
         </div>
 
@@ -171,11 +170,10 @@
 
       <div class="row mb-12 justify-content-md-end">
         <div class="col-md-1">
-          <button type="submit" class="btn btn-primary" id="submit">Submit</button>
+          <button type="submit" class="btn btn-primary">Submit</button>
         </div>
       </div>
       
-       
     </form>
   </div>
 
@@ -183,24 +181,11 @@
     $(document).ready(() => $("#current-time").val(new Date().toLocaleTimeString('ru-RU', {timeZone: 'Europe/Moscow', hour12: false})));
     $(document).ready(() => $("#current-date").val(new Date().toISOString().substr(0, 10)));
 
-    $('#submit').click(function () {
-        $.ajax({
-          url: '/save-form-data',
-          type: 'POST',
-          data: $('#process-form').serialize(),
-          success: function (response) {
-            console.log('Form data saved successfully');
-          },
-          error: function (jqXHR, textStatus, errorThrown) {
-            console.error('Error saving form data: ' + errorThrown);
-          }
-        });
-      });
-
-    $(document).ready(function () {
-      var formGroup = $(".form-group");
-      var inputCount = 1;
-    })
+    function updateInputName(input) {
+      var nextInput = $(input).next('input');
+      var inputValue = $(input).val();
+      $(nextInput).attr('name', inputValue);
+    }
   </script>
 
 </body>
