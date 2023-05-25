@@ -47,7 +47,7 @@
 <body>
   <div class="container">
     <h1>Add process</h1>
-    <form id="process-form" action="/save-form-data" method="POST">
+    <form id="process-form">
       <div class="row mb-1 draggable">
         <div class="col-2">
           <input type="text" class="form-control key-name" value="Project name" oninput="updateInputName(this)"></input>
@@ -179,15 +179,40 @@
 
   <script>
     $(document).ready(() => $("#current-time").val(new Date().toLocaleTimeString('ru-RU', {timeZone: 'Europe/Moscow', hour12: false})));
-    $(document).ready(() => $("#current-date").val(new Date().toISOString().substr(0, 10)));
-
-    function updateInputName(input) {
-      var nextInput = $(input).next('input');
-      var inputValue = $(input).val();
-      $(nextInput).attr('name', inputValue);
-    }
+    $(document).ready(() => $("#current-date").val(new Date().toISOString().substr(0, 10)));    
   </script>
+  <script>
+    $(document).ready(function() {
+      $('#process-form').submit(function(e) {
+        e.preventDefault(); // Prevent the form from submitting normally
+        
+        var formData = "";
+        var i = 0;
 
+        $(this).find('input').each(function() {
+          formData += $(this).val();
+          i % 2 == 0 ? formData += ": " : formData += "\n"
+          i++;
+        });
+        console.log(formData)
+        
+        $.ajax({
+          type: 'GET',
+          url: '/save-form-data',
+          data: JSON.formData,
+          contentType: 'application/json',
+          success: function(response) {
+            // Handle the response from the server
+            console.log(response);
+          },
+          error: function(xhr, status, error) {
+            // Handle errors
+            console.error(error);
+          }
+        });
+      });
+    });
+  </script>
 </body>
 
 </html>

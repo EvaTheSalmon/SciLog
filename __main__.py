@@ -24,9 +24,8 @@ def all():
 def add():
     return render_template('add.html')
 
-@app.route('/save-form-data', methods=['POST'])
+@app.route('/save-form-data', methods=['GET'])
 def save_form_data():
-    # result = jsonify(request.form.to_dict())
     result = jsonify(request.form.to_dict())
     logging.debug(result)
     return result
