@@ -186,15 +186,20 @@
       $('#process-form').submit(function(e) {
         e.preventDefault(); // Prevent the form from submitting normally
         
-        var formData = "";
         var i = 0;
+        var key = "";
+        arr = {};
 
         $(this).find('input').each(function() {
-          formData += $(this).val();
-          i % 2 == 0 ? formData += ": " : formData += "\n"
+          if (i % 2 == 0) {
+            key = $(this).val()
+          } else {
+            arr[key] = $(this).val()
+            key = ""
+          }
           i++;
         });
-        console.log(formData)
+        console.log(arr);
         
         $.ajax({
           type: 'GET',
