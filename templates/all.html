@@ -21,20 +21,20 @@
         <table class="table table-striped">
           <thead>
             <tr>
-              <th>Name</th>
-              <th>Date</th>
-              <th>Recipe</th>
+                {% for field in fields %}
+                <th>{{ field }}</th>
+                {% endfor %}
             </tr>
-          </thead>
-          <tbody>
+        </thead>
+        <tbody>
             {% for process in processes %}
             <tr>
-              <td>{{ process.process_name }}</td>
-              <td>{{ process.process_date }}</td>
-              <td>{{ process.recipe[:140] }}</td>
+                {% for field in fields %}
+                <td>{{ process[field] }}</td>
+                {% endfor %}
             </tr>
             {% endfor %}
-          </tbody>
+        </tbody>
         </table>
       </div>
   </body>

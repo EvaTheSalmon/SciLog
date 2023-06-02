@@ -4,6 +4,8 @@ from pymongo import MongoClient
 from dotenv import load_dotenv
 from bson.json_util import dumps
 
+log = logging.getLogger()
+
 load_dotenv('.env')
 mongo_adress = os.environ.get('MONGO_ADRESS')
 db_name = os.environ.get('DB_NAME')
@@ -22,8 +24,10 @@ def index():
 @app.route('/all.html')
 def all():
     try:
-        processes = db.collection_name.find()
-        return render_template('all.html',processes=processes)
+        processes = collecton.find({})
+        fields = processes[0].keys() if collecton.count_documents({}) > 0 else []
+
+        return render_template('all.html',processes=processes, fields=fields)
     except Exception as e:
         return dumps({'error': str(e)})
     
@@ -34,9 +38,11 @@ def add():
 @app.route('/save-form-data', methods=['GET'])
 def save_form_data():
     result = jsonify(request.form.to_dict())
-    logging.debug(result)
-    # collecton.insert_one(result)
-    return result
-
+    try:
+        collecton.insert_one(result, default=str)
+        return result
+    except Exception as e:
+        return dumps({'error': str(e)})
+    
 if __name__ == '__main__':
     app.run(debug=True)

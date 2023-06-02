@@ -193,6 +193,7 @@
         $(this).find('input').each(function() {
           if (i % 2 == 0) {
             key = $(this).val()
+            key = key.replace(/\s+/g, '-').toLowerCase();
           } else {
             arr[key] = $(this).val()
             key = ""
