@@ -15,7 +15,7 @@ app = Flask(__name__)
 
 client = MongoClient('mongodb://' + mongo_adress)
 db = client[str(db_name)]
-collecton = db[str(collection_name)]
+collection = db[str(collection_name)]
 
 @app.route('/')
 def index():
@@ -24,8 +24,8 @@ def index():
 @app.route('/all.html')
 def all():
     try:
-        processes = collecton.find({})
-        fields = processes[0].keys() if collecton.count_documents({}) > 0 else []
+        processes = collection.find({})
+        fields = processes[0].keys() if collection.count_documents({}) > 0 else []
 
         return render_template('all.html',processes=processes, fields=fields)
     except Exception as e:
@@ -39,7 +39,7 @@ def add():
 def save_form_data():
     result = jsonify(request.form.to_dict())
     try:
-        collecton.insert_one(result, default=str)
+        collection.insert_one(result, default=str)
         return result
     except Exception as e:
         return dumps({'error': str(e)})
